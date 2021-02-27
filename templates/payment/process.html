@@ -1,0 +1,90 @@
+{% extends "main.html" %}
+{% load static i18n %}
+
+{% block title %}Pay by credit card{% endblock %}
+
+{% block content %}
+    <section class="login_box_area section-margin">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="login_box_img" style="padding-bottom: 10px">
+                        <div class="hover">
+                            <h2>{% translate 'Оплата кредитной картой' %}</h2>
+                        </div>
+                    </div>
+                    <div class="login_form_inner">
+                        <form class="row login_form" id="payment" method="post">
+
+                            <div class="col-md-12 form-group">
+                                <label for="card-number">{% translate 'Номер Карты' %}</label>
+                                <div id="card-number" class="field form-control"></div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label for="cvv">CVV</label>
+                                <div id="cvv" class="field form-control"></div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label for="expiration-date">{% translate 'Срок Годности' %}</label>
+                                <div id="expiration-date" class="field form-control"></div>
+                            </div>
+                            <input type="hidden" id="nonce" name="payment_method_nonce" value="">
+                            {% csrf_token %}
+                            <div class="col-md-12 form-group">
+                                <input type="submit" value="{% translate 'Оплатить' %}" class="btn button button-login w-100">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- includes the Braintree JS client SDK -->
+    <script src="https://js.braintreegateway.com/web/3.44.2/js/client.min.js"></script>
+    <script src="https://js.braintreegateway.com/web/3.44.2/js/hosted-fields.min.js"></script>
+    <script>
+        const form = document.querySelector('#payment');
+        const submit = document.querySelector('input[type="submit"]');
+        braintree.client.create({
+            authorization: '{{ client_token }}'
+        }, function (clientErr, clientInstance) {
+            if (clientErr) {
+                console.error(clientErr);
+                return;
+            }
+            braintree.hostedFields.create({
+                client: clientInstance,
+                styles: {
+                    'input': {'font-size': '18px'},
+                    'input.invalid': {'color': 'red'},
+                    'input.valid': {'color': 'green'}
+                },
+                fields: {
+                    number: {selector: '#card-number', 'placeholder': '4111 1111 1111 1111'},
+                    cvv: {selector: '#cvv', 'placeholder': '123'},
+                    expirationDate: {selector: '#expiration-date', 'placeholder': '12/28'}
+                }
+            }, function (hostedFieldsErr, hostedFieldsInstance) {
+                if (hostedFieldsErr) {
+                    console.error(hostedFieldsErr);
+                    return;
+                }
+                submit.removeAttribute('disabled');
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    hostedFieldsInstance.tokenize(function (tokenizeErr, payload) {
+                        if (tokenizeErr) {
+                            console.error(tokenizeErr);
+                            return;
+                        }
+                        // set nonce to send to the server
+                        document.getElementById('nonce').value = payload.nonce;
+                        // submit form
+                        document.getElementById('payment').submit();
+                    });
+                }, false);
+            });
+        });
+    </script>
+{% endblock %}

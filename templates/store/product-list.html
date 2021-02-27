@@ -1,0 +1,201 @@
+{% extends 'main.html' %}
+{% load static i18n %}
+
+{% block content %}
+
+    <!-- Breadcrumb Start -->
+    <div class="breadcrumb-wrap">
+        <div class="container-fluid">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">{% translate 'Главная страница' %}</a></li>
+                {% if category %}
+                    <li class="breadcrumb-item active">{% translate 'Категория' %}: {{ category.name }}</li>
+                {% elif publisher %}
+                    <li class="breadcrumb-item active">{% translate 'Издатель' %}: {{ publisher.name }}</li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Product List Start -->
+    <div class="product-view">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="product-view-top">
+                                <form action="{% url 'store:product_list' %}" method="get" name="filter">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="product-short">
+                                                <div class="dropdown">
+                                                    <select name="sort" class="dropdown-toggle" data-toggle="dropdown">
+                                                        <option value="" selected="selected">{% translate 'Сортировка по ...' %}</option>
+                                                        <option class="dropdown-item" value="newer">{% translate 'Новинки' %}</option>
+                                                        <option class="dropdown-item" value="descending">{% translate 'Цене (убыванию)' %}</option>
+                                                        <option class="dropdown-item" value="ascending">{% translate 'Цене (возрастанию)' %}</option>
+                                                        <option class="dropdown-item" value="reviews">{% translate 'Отзывам' %}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="product-price-range">
+                                                <div class="dropdown">
+                                                    <select name="price_range" class="dropdown-toggle" data-toggle="dropdown">
+                                                        <option value="" selected="selected">{% translate 'Диапазон цен' %}</option>
+                                                        <option class="dropdown-item" value="0_1000">0₽ {% translate 'до' %} 1000₽</option>
+                                                        <option class="dropdown-item" value="1001_2500">1001₽ {% translate 'до' %} 2500₽</option>
+                                                        <option class="dropdown-item" value="2501_5000">2501₽ {% translate 'до' %} 5000₽</option>
+                                                        <option class="dropdown-item" value="5001_7500">5001₽ {% translate 'до' %} 7500₽</option>
+                                                        <option class="dropdown-item" value="7501_10000">7501₽ {% translate 'до' %} 10000₽</option>
+                                                        <option class="dropdown-item" value="10001_15000">10001₽ {% translate 'до' %} 15000₽</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input class="btn" type="submit" value="{% translate 'Submit' %}">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        {% for product in products %}
+                            <div class="col-md-4">
+                                <div class="product-item">
+                                    <div class="product-title">
+                                        <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                                        {% if product.get_rate > 0 %}
+                                            <div class="ratting">
+                                                <i class="{% if product.get_rate >= 1 %}fa{% else %}far{% endif %} fa-star"></i>
+                                                <i class="{% if product.get_rate >= 2 %}fa{% else %}far{% endif %} fa-star"></i>
+                                                <i class="{% if product.get_rate >= 3 %}fa{% else %}far{% endif %} fa-star"></i>
+                                                <i class="{% if product.get_rate >= 4 %}fa{% else %}far{% endif %} fa-star"></i>
+                                                <i class="{% if product.get_rate >= 5 %}fa{% else %}far{% endif %} fa-star"></i>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="product-image">
+                                        <a href="{{ product.get_absolute_url }}">
+                                            <img style="
+                                                max-width: 100%;
+                                                height: auto;
+                                                display: block;
+                                                border: 30px solid;
+                                                border-image: linear-gradient(135deg, #fff, #fff); 
+                                                border-image-slice: 1;" 
+                                            src="{{ product.base_photo.url }}" alt="Product Image">
+                                        </a>
+                                        <div class="product-action">
+                                            <a class="update-cart-or-wishlist" data-update="cart" data-action="add"
+                                            data-product="{{ product.id }}"><i class="fa fa-cart-plus"></i></a>
+                                            <a class="update-cart-or-wishlist" data-update="wishlist" data-action="add"
+                                            data-product="{{ product.id }}"><i class="fa fa-heart"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-price">
+                                        <h3>{{ product.price }}<span>₽</span></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Pagination Start -->
+                    {% if products.paginator.page_range|last != 1 %}
+                        <div class="col-md-12">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    {% if products.has_previous %}
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="?page={{ products.previous_page_number }}"
+                                               tabindex="-1">{% translate 'Previous' %}</a>
+                                        </li>
+                                    {% endif %}
+                                    {% for num in products.paginator.page_range %}
+                                        {% if num == products.number %}
+                                            <li class="page-item active"><a class="page-link" href="">{{ num }}</a></li>
+                                        {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
+                                            <li class="page-item"><a class="page-link"
+                                                                     href="?page={{ num }}">{{ num }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if products.has_next %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ products.next_page_number }}">{% translate 'Next' %}</a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+                    {% endif %}
+                    <!-- Pagination Start -->
+                </div>
+
+                <!-- Side Bar Start -->
+                <div class="col-lg-4 sidebar">
+                    <div class="sidebar-widget category">
+                        <h2 class="title">{% translate 'Категории' %}</h2>
+                        <nav class="navbar bg-light">
+                            <ul class="navbar-nav">
+                                {% for c in categories %}
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </nav>
+                    </div>
+
+                    <div class="sidebar-widget brands">
+                        <h2 class="title">{% translate 'Издатели' %}</h2>
+                        <ul>
+                            {% for publisher in publishers %}
+                                <li>
+                                    <a href="{{ publisher.get_absolute_url }}">{{ publisher.name }} </a><span>({{ publisher.book_publisher.all|length }})</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <!-- Side Bar End -->
+            </div>
+        </div>
+    </div>
+    <!-- Product List End -->
+    <div class="newsletter" style="margin-bottom: 30px">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1>{% translate 'Подписаться на рассылку' %}</h1>
+                </div>
+                <div class="col-md-6">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="form">
+                            <input name="email" type="email" placeholder="{% translate 'Ваш email' %}">
+                            <button>Send</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Brand Start -->
+    <div class="brand">
+        <div class="container-fluid">
+            <div class="brand-slider">
+                <div class="brand-item"><img src="{% static 'img/brand-1.png' %}" alt=""></div>
+                <div class="brand-item"><img src="{% static 'img/brand-2.png' %}" alt=""></div>
+                <div class="brand-item"><img src="{% static 'img/brand-3.png' %}" alt=""></div>
+                <div class="brand-item"><img src="{% static 'img/brand-4.png' %}" alt=""></div>
+                <div class="brand-item"><img src="{% static 'img/brand-5.png' %}" alt=""></div>
+                <div class="brand-item"><img src="{% static 'img/brand-6.png' %}" alt=""></div>
+            </div>
+        </div>
+    </div>
+    <!-- Brand End -->
+{% endblock %}

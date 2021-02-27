@@ -1,0 +1,12 @@
+{% extends "main.html" %}
+{% load i18n %}
+{% block title %}Payment canceled{% endblock %}
+
+{% block content %}
+    <section class="section-margin--small mb-5">
+        <div class="container">
+            <h1>{% translate 'Ваш платеж не был обработан' %}</h1>
+            <p>T{% translate 'возникла проблема с обработкой вашего платежа' %}.</p>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,429 @@
+{% extends 'main.html' %}
+{% load static i18n %}
+
+{% block content %}
+<!-- Breadcrumb Start -->
+<div class="breadcrumb-wrap">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">{% translate 'Домашняя страница' %}</a></li>
+            <li class="breadcrumb-item active">{{ product.name }}</li>
+        </ul>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+
+<!-- Product Detail Start -->
+<div class="product-detail">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="product-detail-top">
+                    <div class="row align-items-center">
+                        <div class="col-md-5">
+                            <div class="product-slider-single normal-slider">
+                                <img src="{{ product.base_photo.url }}" alt="Product Image">
+                                {% if product.images %}
+                                    {% for image in product.images.all %}
+                                        <img src="{{ image.image.url }}" alt="Product Image">
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="product-slider-single-nav normal-slider">
+                                <div class="slider-nav-img"><img src="{{ product.base_photo.url }}"
+                                                                 alt="Product Image"></div>
+                                {% if product.images %}
+                                {% for image in product.images.all %}
+                                <div class="slider-nav-img"><img src="{{ image.image.url }}"
+                                                                 alt="Product Image"></div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="product-content" style="padding-bottom: 250px;">
+                                <div class="title"><h2>{{ product.name }}</h2></div>
+                                {% if not product.get_rate <= 0 %}
+                                <div class="ratting">
+                                    <i class="{% if product.get_rate >= 1 %}fa{% else %}far{% endif %} fa-star"></i>
+                                    <i class="{% if product.get_rate >= 2 %}fa{% else %}far{% endif %} fa-star"></i>
+                                    <i class="{% if product.get_rate >= 3 %}fa{% else %}far{% endif %} fa-star"></i>
+                                    <i class="{% if product.get_rate >= 4 %}fa{% else %}far{% endif %} fa-star"></i>
+                                    <i class="{% if product.get_rate >= 5 %}fa{% else %}far{% endif %} fa-star"></i>
+                                </div>
+                                {% endif %}
+                                <div class="price">
+                                    <h4>{% translate 'Цена' %}:</h4>
+                                    <p>{{ product.price }}₽<span><!--old price--></span></p>
+                                </div>
+                                <div class="quantity">
+                                    <h4 style="margin-right: 25px;">{% translate 'Количество' %}:</h4>
+                                    <div class="qty">
+                                        <button class="btn-minus"><i class="fa fa-minus"></i></button>
+                                        <input id="product_quantity_id" type="text" value="1">
+                                        <button class="btn-plus"><i class="fa fa-plus"></i></button>
+                                    </div>
+                                </div>
+                                <div class="action">
+                                    <a class="btn update-cart-or-wishlist" data-update="cart" data-action="add"
+                                       data-product="{{ product.id }}"><i class="fa fa-shopping-cart"></i>
+                                        {% translate 'В Корзину' %}</a> <!--Add to Cart-->
+                                    <a class="btn update-cart-or-wishlist" data-update="wishlist" data-action="add"
+                                       data-product="{{ product.id }}" onclick="setTimeout(javascript:location.href='{% url 'orders:order_create' %}', 1000)"><i class="fa fa-shopping-bag"></i>
+                                        {% translate 'В Cписок Желаний' %}</a> <!--Buy Now-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row product-detail-bottom">
+                    <div class="col-lg-12">
+                        <ul class="nav nav-pills nav-justified">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="pill" href="#description">{% translate 'Описание' %}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="pill" href="#specification">{% translate 'Характеристики' %}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="pill" href="#reviews">{% translate 'Отзывы' %}
+                                    ({{ reviews|length }})</a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div id="description" class="container tab-pane active">
+                                <h4>{% translate 'Описание книги' %}</h4>
+                                <p>{{ product.description|safe  }}</p>
+                            </div>
+                            <div id="specification" class="container tab-pane fade">
+                                <h4>{% translate 'Характеристики книги' %}</h4>
+                                <table class="table">
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <h5>{% translate 'Автор' %}</h5>
+                                        </td>
+                                        <td>
+                                            <h5>{{ product.author.name }}</h5>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h5>{% translate 'Жанр' %}</h5>
+                                        </td>
+                                        <td>
+                                            <h5>{{ product.genre.name }}</h5>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h5>{% translate 'Издательство' %}</h5>
+                                        </td>
+                                        <td>
+                                            <h5>{{ product.publisher.name }}</h5>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h5>{% translate 'Серия книг' %}</h5>
+                                        </td>
+                                        <td>
+                                            <h5>{{ product.book_series }}</h5>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h5>{% translate 'Возраст' %}</h5>
+                                        </td>
+                                        <td>
+                                            <h5>{{ product.age }}</h5>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h5>{% translate 'Год издания' %}</h5>
+                                        </td>
+                                        <td>
+                                            <h5>{{ product.publication_date }}</h5>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h5>{% translate 'Переплет' %}</h5>
+                                        </td>
+                                        <td>
+                                            <h5>{{ product.binding }}</h5>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h5>{% translate 'Количество страниц' %}</h5>
+                                        </td>
+                                        <td>
+                                            <h5>{{ product.number_of_pages }}</h5>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h5>{% translate 'Вес, г' %}</h5>
+                                        </td>
+                                        <td>
+                                            <h5>{{ product.weight_g }}</h5>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h5>{% translate 'Размер, мм' %}</h5>
+                                        </td>
+                                        <td>
+                                            <h5>{{ product.size_mm }}</h5>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h5>{% translate 'Язык' %}</h5>
+                                        </td>
+                                        <td>
+                                            <h5>{{ product.language }}</h5>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <div id="reviews" class="container tab-pane fade">
+                                {% if reviews %}
+                                {% for review in reviews %}
+                                <div class="reviews-submitted">
+                                    <div class="reviewer">
+                                        {% if review.user.get_full_name %}
+                                        {{ review.user.get_full_name }}
+                                        {% else %}
+                                        {{ review.user.username }}
+                                        {% endif %} - <span>{{ review.created }}</span></div>
+                                    <div class="ratting">
+                                        <i class="{% if review.rate >= 1 %}fa{% else %}far{% endif %} fa-star"></i>
+                                        <i class="{% if review.rate >= 2 %}fa{% else %}far{% endif %} fa-star"></i>
+                                        <i class="{% if review.rate >= 3 %}fa{% else %}far{% endif %} fa-star"></i>
+                                        <i class="{% if review.rate >= 4 %}fa{% else %}far{% endif %} fa-star"></i>
+                                        <i class="{% if review.rate >= 5 %}fa{% else %}far{% endif %} fa-star"></i>
+                                    </div>
+                                    <p>
+                                        Subject: {{ review.subject }}
+                                    </p>
+                                    <p>
+                                        Text: {{ review.comment }}
+                                    </p>
+                                    {% if request.user == review.user %}
+                                        <a style="margin-bottom: 10px;" href="javascript:PopUpShow()" class="btn">{% translate 'Редактировать' %}</a>
+                                        <form method="post" action='.'>
+                                            {% csrf_token %}
+                                            <button class="btn" name="delete_button">{% translate 'Удалить' %}</button>
+                                        </form>
+                                        <div class="b-popup" id="popup1">
+                                            <div class="b-popup-content">
+                                                <form method="post" action='.'>
+                                                    {% csrf_token %}
+                                                    <div class="ratting">
+                                                        <div class="simple-rating">
+                                                            <div class="simple-rating__items">
+                                                                <input id="simple-rating__5" class="simple-rating__item"
+                                                                       name="simple-rating" type="radio" value="5">
+                                                                <label for="simple-rating__5"
+                                                                       class="simple-rating__label"></label>
+                                                                <input id="simple-rating__4" class="simple-rating__item"
+                                                                       name="simple-rating" type="radio" value="4">
+                                                                <label for="simple-rating__4"
+                                                                       class="simple-rating__label"></label>
+                                                                <input id="simple-rating__3" class="simple-rating__item"
+                                                                       name="simple-rating" type="radio" value="3">
+                                                                <label for="simple-rating__3"
+                                                                       class="simple-rating__label"></label>
+                                                                <input id="simple-rating__2" class="simple-rating__item"
+                                                                       name="simple-rating" type="radio" value="2">
+                                                                <label for="simple-rating__2"
+                                                                       class="simple-rating__label"></label>
+                                                                <input id="simple-rating__1" class="simple-rating__item"
+                                                                       name="simple-rating" type="radio" value="1">
+                                                                <label for="simple-rating__1"
+                                                                       class="simple-rating__label"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form">
+                                                        <div class="col-sm-6">
+                                                            {{ update_review_form.subject }}
+                                                        </div>
+                                                        <div class="col-sm-8">
+                                                            {{ update_review_form.comment }}
+                                                        </div>
+                                                        <div class="col-sm-5">
+                                                            <button name="save_update_button">{% translate 'Сохранить' %}</button>
+                                                            <a href="javascript:PopUpHide()" class="btn">{% translate 'Закрыть' %}</a>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                {% endfor %}
+                                {% endif %}
+                                {% if create_review_form %}
+                                    <div class="reviews-submit">
+                                        <h4>{% translate 'Дайте свой отзыв' %}:</h4>
+                                        <form method='post' action='.'>
+                                            {% csrf_token %}
+                                            <div class="ratting">
+                                                <div class="simple-rating">
+                                                    <div class="simple-rating__items">
+                                                        <input id="simple-rating__5" class="simple-rating__item"
+                                                            name="simple-rating" type="radio" value="5">
+                                                        <label for="simple-rating__5" class="simple-rating__label"></label>
+                                                        <input id="simple-rating__4" class="simple-rating__item"
+                                                            name="simple-rating" type="radio" value="4">
+                                                        <label for="simple-rating__4" class="simple-rating__label"></label>
+                                                        <input id="simple-rating__3" class="simple-rating__item"
+                                                            name="simple-rating" type="radio" value="3">
+                                                        <label for="simple-rating__3" class="simple-rating__label"></label>
+                                                        <input id="simple-rating__2" class="simple-rating__item"
+                                                            name="simple-rating" type="radio" value="2">
+                                                        <label for="simple-rating__2" class="simple-rating__label"></label>
+                                                        <input id="simple-rating__1" class="simple-rating__item"
+                                                            name="simple-rating" type="radio" value="1">
+                                                        <label for="simple-rating__1" class="simple-rating__label"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row form">
+                                                <div class="col-sm-8">
+                                                    <input name="subject" type="text" placeholder="Subject">
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <textarea name="comment" placeholder="Comment"></textarea>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    {% if user.is_authenticated %}
+                                                    <button>{% translate 'Отправить' %}</button>
+                                                    {% else %}
+                                                    <p>{% translate 'Вы должны быть зарегистрированы чтобы оставить отзыв' %}</p>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if related_products %}
+                <div class="product">
+                    <div class="section-header">
+                        <h1>{% translate 'Похожие Книги' %}</h1>
+                    </div>
+
+                    <div class="row align-items-center product-slider product-slider-3">
+                        {% for prod in related_products %}
+                        <div class="col-lg-3">
+                            <div class="product-item">
+                                <div class="product-title">
+                                    <a href="{{ prod.get_absolute_url }}">{{ prod.name }}</a>
+                                    {% if not prod.get_rate <= 0 %}
+                                    <div class="ratting">
+                                        <i class="{% if review.rate >= 1 %}fa{% else %}far{% endif %} fa-star"></i>
+                                        <i class="{% if review.rate >= 2 %}fa{% else %}far{% endif %} fa-star"></i>
+                                        <i class="{% if review.rate >= 3 %}fa{% else %}far{% endif %} fa-star"></i>
+                                        <i class="{% if review.rate >= 4 %}fa{% else %}far{% endif %} fa-star"></i>
+                                        <i class="{% if review.rate >= 5 %}fa{% else %}far{% endif %} fa-star"></i>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div class="product-image">
+                                    <a href="{{ prod.get_absolute_url }}">
+                                        <img src="{{ prod.base_photo }}" alt="Product Image">
+                                    </a>
+                                    <div class="product-action">
+                                        <a class="btn update-cart-or-wishlist" data-update="cart"
+                                            data-action="add"
+                                            data-product="{{ prod.id }}"><i class="fa fa-cart-plus"></i></a>
+                                        <a class="btn update-cart-or-wishlist" data-update="wishlist"
+                                            data-action="add"
+                                            data-product="{{ prod.id }}"><i class="fa fa-heart"></i></a>
+                                    </div>
+                                </div>
+                                <div class="product-price">
+                                    <h3>{{ prod.price }}<span>₽</span></h3>
+                                    <a class="btn update-cart-or-wishlist" data-update="cart"
+                                       data-action="add"
+                                       data-product="{{ prod.id }}"><i class="fa fa-shopping-cart"></i>{% translate 'Buy Now' %}</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Side Bar Start -->
+            <div class="col-lg-4 sidebar">
+                <div class="sidebar-widget category">
+                    <h2 class="title">Категории</h2>
+                    <nav class="navbar bg-light">
+                        <ul class="navbar-nav">
+                            {% for c in categories %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="sidebar-widget brands">
+                    <h2 class="title">Издатели</h2>
+                    <ul>
+                        {% for p in publishers %}
+                        <li><a href="{{ p.get_absolute_url }}">{{ p.name }} </a><span>({{ p.book_publisher.all|length }})</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <!-- Side Bar End -->
+        </div>
+    </div>
+</div>
+<!-- Product Detail End -->
+
+<!-- Brand Start -->
+<div class="brand">
+    <div class="container-fluid">
+        <div class="brand-slider">
+            <div class="brand-item"><img src="{% static 'img/brand-1.png' %}" alt=""></div>
+            <div class="brand-item"><img src="{% static 'img/brand-2.png' %}" alt=""></div>
+            <div class="brand-item"><img src="{% static 'img/brand-3.png' %}" alt=""></div>
+            <div class="brand-item"><img src="{% static 'img/brand-4.png' %}" alt=""></div>
+            <div class="brand-item"><img src="{% static 'img/brand-5.png' %}" alt=""></div>
+            <div class="brand-item"><img src="{% static 'img/brand-6.png' %}" alt=""></div>
+        </div>
+    </div>
+</div>
+<!-- Brand End -->
+{% block script %}
+<script>
+    $(document).ready(function(){
+        PopUpHide();
+    });
+    function PopUpShow(){
+        $("#popup1").show();
+    }
+    function PopUpHide(){
+        $("#popup1").hide();
+    }
+</script>
+{% endblock script %}
+{% endblock %}

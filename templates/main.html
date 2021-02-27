@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+{% load static i18n %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}E Store - eCommerce{% endblock %}</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="eCommerce HTML Template Free Download" name="keywords">
+    <meta content="eCommerce HTML Template Free Download" name="description">
+
+    <!-- Favicon -->
+    <link href="{% static 'img/favicon.ico' %}" rel="icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400|Source+Code+Pro:700,900&display=swap"
+          rel="stylesheet">
+
+    <!-- CSS Libraries -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="{% static 'lib/slick/slick.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/slick/slick-theme.css' %}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <script type="text/javascript">
+        const user = "{{ request.user }}"
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        const csrftoken = getCookie('csrftoken');
+
+
+    </script>
+</head>
+
+<body>
+<!-- Nav Bar Start -->
+<div class="nav">
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+            <a href="/" class="navbar-brand">MENU</a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                <div class="navbar-nav mr-auto">
+                    <a href="{% url 'store:product_list' %}" class="nav-item nav-link active">{% translate 'Главная
+                        страница' %}</a>
+                    <a href="{% url 'store:contact' %}" class="nav-item nav-link">{% translate 'Контакты' %}</a>
+                </div>
+                <div class="navbar-nav ml-auto">
+                    <form class="nav-item" style="padding-top: 2px;" action="{% url 'set_language' %}" method="post">{%
+                        csrf_token %}
+                        <input name="next" type="hidden" value="{{ redirect_to }}">
+                        <select onchange="this.form.submit()" name="language" style="
+                            padding: 3px; border: solid 1px #517B97;
+                            outline: 0; background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF), color-stop(4%, #CAD9E3), to(#FFFFFF));
+                            background: -moz-linear-gradient(top, #FFFFFF, #CAD9E3 1px, #FFFFFF 25px);
+                            box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px; -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+                            -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px; width:150px; border-radius:5px;">
+                            {% get_current_language as LANGUAGE_CODE %}
+                            {% get_available_languages as LANGUAGES %}
+                            {% get_language_info_list for LANGUAGES as languages %}
+                            {% for language in languages %}
+                            <option value="{{ language.code }}" {% if language.code== LANGUAGE_CODE %}
+                                    selected{% endif %}>
+                                {{ language.name_local }} ({{ language.code }})
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                    {% if not user.is_authenticated %}
+                    <a href="{% url 'accounts:login' %}" class="nav-item nav-link">{% translate 'Логин' %}</a>
+                    <a href="{% url 'accounts:register' %}" class="nav-item nav-link">{% translate 'Регистрация' %}</a>
+                    {% else %}
+                    <a href="{% url 'accounts:account' %}" class="nav-item nav-link">{% translate 'Аккаунт' %}</a>
+                    <a href="{% url 'accounts:logout' %}" class="nav-item nav-link">{% translate 'Выйти' %}</a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+<!-- Nav Bar End -->
+
+<!-- Bottom Bar Start -->
+<div class="bottom-bar">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-md-3">
+                <div class="logo">
+                    <a href="/">
+                        <img src="{% static 'img/logo.png' %}" alt="Logo">
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <form action="{% url 'store:product_list' %}" method="get">
+                    <div class="search">
+                        <input type="text" placeholder="{% translate 'Поиск' %}" name="q">
+                        <button><i class="fa fa-search"></i></button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-3">
+                <div class="user">
+                    <a href="{% url 'cart:wishlist' %}" class="btn wishlist">
+                        <i class="fa fa-heart"></i>
+                        <span>({{ count_product_in_wishlist }})</span>
+                    </a>
+                    <a href="{% url 'cart:cart' %}" class="btn cart">
+                        <i class="fa fa-shopping-cart"></i>
+                        <span>({{ count_product_in_cart }})</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Bottom Bar End -->
+{% if messages %}
+<ul class="messages" style="list-style-type: none;">
+    {% for message in messages %}
+    <li class="{{ message.tags }}">
+        {{ message|safe }}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% block content %}
+
+{% endblock %}
+<!-- Footer Bottom Start -->
+<div class="footer-bottom">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 copyright">
+                <p>Copyright &copy; <a href="https://htmlcodex.com">HTML Codex</a>. All Rights Reserved</p>
+            </div>
+            <div class="col-md-6 template-by">
+                <p>Template By <a href="https://htmlcodex.com">HTML Codex</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer Bottom End -->
+
+<!-- Back to Top -->
+<a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'lib/easing/easing.min.js' %}"></script>
+<script src="{% static 'lib/slick/slick.min.js' %}"></script>
+
+<!-- Template Javascript -->
+<script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/cart.js' %}"></script>
+{% block script %}{% endblock %}
+</body>
+</html>

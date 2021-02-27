@@ -1,0 +1,12 @@
+{% extends "main.html" %}
+{% load i18n %}
+{% block title %}Payment successful{% endblock %}
+
+{% block content %}
+    <section class="section-margin--small mb-5">
+        <div class="container">
+            <h1>{% translate 'Ваш платеж прошел успешно' %}</h1> <!--Your payment was successful-->
+            <p>{% translate 'Ваш платеж был успешно обработан' %}.</p> <!--Your payment has been processed successfully-->
+        </div>
+    </section>
+{% endblock %}

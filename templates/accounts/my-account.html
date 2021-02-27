@@ -1,0 +1,195 @@
+{% extends 'main.html' %}
+{% load static i18n %}
+{% block title %}
+    Account
+{% endblock %}
+
+{% block content %}
+    <!-- Breadcrumb Start -->
+    <div class="breadcrumb-wrap">
+        <div class="container-fluid">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">{% translate 'Главная страница' %}</a></li>
+                <li class="breadcrumb-item active">{% translate 'Аккаунт' %}</li>
+            </ul>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- My Account Start -->
+    <div class="my-account">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
+                        <a class="nav-link" id="orders-nav" data-toggle="pill" href="#orders-tab" role="tab"><i
+                                class="fa fa-shopping-bag"></i>{% translate 'Заказы' %}</a>
+                        <a class="nav-link" id="address-nav" data-toggle="pill" href="#address-tab" role="tab"><i
+                                class="fa fa-map-marker-alt"></i>{% translate 'Адреса' %}</a>
+                        <a class="nav-link active" id="account-nav" data-toggle="pill" href="#account-tab" role="tab"><i
+                                class="fa fa-user"></i>{% translate 'Аккаунт' %}</a>
+                        <a class="nav-link" href="{% url 'accounts:logout' %}"><i class="fa fa-sign-out-alt"></i>{% translate 'Выйти' %}</a>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="tab-content">
+                        <div class="tab-pane fade" id="orders-tab" role="tabpanel" aria-labelledby="orders-nav">
+                            <div class="table-responsive">
+                                {% if not orders %}
+                                    <div class="col-md-6">
+                                        <h4>{% translate 'У вас нет заказов' %}</h4>
+                                    </div>
+                                {% else %}
+                                    <table class="table table-bordered">
+                                        <thead class="thead-dark">
+                                        <tr>
+                                            <th></th>
+                                            <th>{% translate 'Книга' %}</th>
+                                            <th>{% translate 'Время' %}</th>
+                                            <th>{% translate 'Цена' %}</th>
+                                            <th>{% translate 'Статус' %}</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for order in orders %}
+                                            {% for item in order.items.all %}
+                                                <tr>
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td>
+                                                        <a href="{{ item.product.get_absolute_url }}">{{ item.product.name }}</a>
+                                                    </td>
+                                                    <td>{{ order.created }}</td>
+                                                    <td>{{ item.product.price }}</td>
+                                                    {% if order.paid %}
+                                                        <td>{% translate 'Оплачено' %}</td>
+                                                    {% else %}
+                                                        <td>{% translate 'Не оплачено' %}</td>
+                                                    {% endif %}
+                                                </tr>
+                                            {% endfor %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                {% endif %}    
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="address-tab" role="tabpanel" aria-labelledby="address-nav">
+                            {% if orders|length == 1 or orders|length == 0 %}
+                                <h4>{% translate 'Адрес Доставки' %}</h4>
+                            {% else %}
+                                <h4>{% translate 'Адреса доставки' %}</h4>
+                            {% endif %}
+                            <div class="row">
+                                {% if not orders %}
+                                    <div class="col-md-6">
+                                        <p>{% translate 'У вас нет адресов доставки' %}</p>
+                                    </div>
+                                {% else %}    
+                                    {% for order in orders %}
+                                        <div class="col-md-6">
+                                            <h5>№{{ forloop.counter }} {% translate 'Адрес' %}</h5>
+                                            <p>{{ order.postal_code }}, {{ order.address }}, {{ order.city }}</p>
+                                            <p>Email: {{ order.email }}</p>
+                                            <button class="btn">{% translate 'Редактировать адрес' %}</button>
+                                            <button class="btn">{% translate 'Удалить адрес' %}</button>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="tab-pane fade show active" id="account-tab" role="tabpanel" aria-labelledby="account-nav">
+                            {% if password_change_form.errors %}
+                                <p>{{ password_change_form.errors }}</p>
+                            {% endif %}
+                            <h4>{% translate 'Изменить данные' %}</h4>
+                            <form method="post">
+                                <div class="row">
+                                    {% csrf_token %}
+                                    <div class="col-md-6">
+                                        {% if form.first_name.errors %}
+                                            {% for error in form.first_name.errors %}
+                                                <strong style="padding-left:3.00em;">{{ error|escape }}</strong>
+                                            {% endfor %}<br>
+                                        {% endif %}
+                                        {{ form.first_name }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        {% if form.last_name.errors %}
+                                            {% for error in form.last_name.errors %}
+                                                <strong style="padding-left:3.00em;">{{ error|escape }}</strong>
+                                            {% endfor %}<br>
+                                        {% endif %}
+                                        {{ form.last_name }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        {% if form.username.errors %}
+                                            {% for error in form.username.errors %}
+                                                <strong style="padding-left:3.00em;">{{ error|escape }}</strong>
+                                            {% endfor %}<br>
+                                        {% endif %}
+                                        {{ form.username }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        {% if form.email.errors %}
+                                            {% for error in form.email.errors %}
+                                                <strong style="padding-left:3.00em;">{{ error|escape }}</strong>
+                                            {% endfor %}<br>
+                                        {% endif %}
+                                        {{ form.email }}
+                                    </div>
+                                    <div class="col-md-12">
+                                        <button name="user_update_button" class="btn">{% translate 'Сохранить' %}</button>
+                                        <br><br>
+                                    </div>
+                                </div>
+                            </form>
+                            <h4>{% translate 'Изменить пароль' %}</h4>
+                            <form method="post">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        {% if password_change_form.old_password.errors %}
+                                            <ol>
+                                            {% for error in password_change_form.old_password.errors.subject %}
+                                                <li><strong>{{ error|escape }}</strong></li>
+                                            {% endfor %}
+                                            </ol>
+                                        {% endif %}
+                                        <input class="form-control" type="password" name="old_password"
+                                               placeholder="{% translate 'Текущий Пароль' %}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        {% if password_change_form.new_password1.errors %}
+                                            <ol>
+                                            {% for error in password_change_form.new_password1.errors %}
+                                                </li><strong style="padding-left:3.00em;">{{ error|escape }}</strong></li>
+                                            {% endfor %}<br>
+                                            </ol>
+                                        {% endif %}
+                                        <input class="form-control" type="password" name="new_password1"
+                                               placeholder="{% translate 'Новый Пароль' %}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        {% if password_change_form.new_password2.errors %}
+                                        </ol>
+                                            {% for error in password_change_form.new_password2.errors %}
+                                                <li><strong style="padding-left:3.00em;">{{ error|escape }}</strong></li>
+                                            {% endfor %}<br>
+                                            </ol>
+                                        {% endif %}
+                                        <input class="form-control" type="password" name="new_password2"
+                                               placeholder="{% translate 'Подтвердите Пароль' %}">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <button name="password_change_button" class="btn">{% translate 'Сохранить' %}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- My Account End -->
+{% endblock %}

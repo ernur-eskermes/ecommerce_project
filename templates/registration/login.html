@@ -1,0 +1,67 @@
+{% extends 'main.html' %}
+{% load static i18n %}
+
+{% block content %}
+
+    <!-- Breadcrumb Start -->
+    <div class="breadcrumb-wrap">
+        <div class="container-fluid">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">{% translate 'Главная страница' %}</a></li>
+                <li class="breadcrumb-item active">{% translate 'Логин' %}</li>
+            </ul>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Login Start -->
+    <div class="login">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="login-form">
+                            <div class="row">
+                                {% if form.errors %}
+                                    <strong>{{ form.non_field_errors|escape }}</strong>
+                                {% endif %}
+                                <div class="col-md-6">
+                                    {% if form.username.errors %}
+                                        {% for error in form.username.errors %}
+                                            <strong style="padding-left:3.00em;">{{ error|escape }}</strong>
+                                        {% endfor %}<br>
+                                    {% endif %}
+                                    <label>Username</label>
+                                    <input name="username" class="form-control" type="text" placeholder="Username">
+                                </div>
+                                <div class="col-md-6">
+                                    {% if form.password.errors %}
+                                        {% for error in form.password.errors %}
+                                            <strong style="padding-left:3.00em;">{{ error|escape }}</strong>
+                                        {% endfor %}<br>
+                                    {% endif %}
+                                    <label>{% translate 'Пароль' %}</label>
+                                    <input name="password" class="form-control" type="password" placeholder="{% translate 'Пароль' %}">
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="custom-control custom-checkbox">
+                                        <input name="remember_me" type="checkbox" class="custom-control-input" id="newaccount">
+                                        <label class="custom-control-label" for="newaccount">{% translate 'Сохранить в системе' %}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <button class="btn">{% translate 'Submit' %}</button>
+                                </div>
+                                <div class="col-md-12" style="padding-top: 10px;">
+                                    <p><a href="{% url 'password_reset' %}">Забыли свой пароль?</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Login End -->
+{% endblock %}

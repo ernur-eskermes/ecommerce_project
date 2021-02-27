@@ -1,0 +1,84 @@
+{% extends 'main.html' %}
+{% load static i18n %}
+
+{% block content %}
+
+    <!-- Breadcrumb Start -->
+    <div class="breadcrumb-wrap">
+        <div class="container-fluid">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">{% translate 'Домашняя страница' %}</a></li>
+                <li class="breadcrumb-item active">{% translate 'Доставка' %}</li>
+            </ul>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Checkout Start -->
+    <div class="checkout">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="checkout-inner">
+                        <div class="billing-address">
+                            <h2>{% translate 'Адрес Доставки' %}</h2>
+                            <form method="post">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label>{% translate 'Имя' %}</label>
+                                        <input name="first_name" class="form-control" type="text"
+                                               placeholder="{% translate 'Имя' %}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>{% translate 'Фамилия' %}</label>
+                                        <input name="last_name" class="form-control" type="text"
+                                               placeholder="{% translate 'Фамилия' %}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>E-mail</label>
+                                        <input name="email" class="form-control" type="text" placeholder="E-mail">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label>{% translate 'Адрес' %}</label>
+                                        <input name="address" class="form-control" type="text" placeholder="{% translate 'Адрес' %}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>{% translate 'Город' %}</label>
+                                        <input name="city" class="form-control" type="text" placeholder="{% translate 'Город' %}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>{% translate 'ZIP Код' %}</label>
+                                        <input name="postal_code" class="form-control" type="text"
+                                               placeholder="{% translate 'ZIP Код' %}">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <input class="btn" type="submit" value="{% translate 'Отправить' %}">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="checkout-inner">
+                        <div class="checkout-summary">
+                            <h1>{% translate 'Корзина' %}</h1>
+                            {% for item in cart %}
+                                <p>{{ item.product.name|slice:13 }}...<span>{{ item.total_price }}₽</span></p>
+                            {% endfor %}
+                            <p class="sub-total">Sub Total<span>{{ cart.get_total_price }}₽</span></p>
+                            {% if cart.coupon %}
+                                <p class="sub-total">{% translate 'Скидка' %}
+                                    <span class="text-danger">- {{ cart.get_discount|floatformat:2 }}₽</span></p>
+                            {% endif %}
+                            <p class="ship-cost">{% translate 'Цена доставки' %}<span>0₽</span></p>
+                            <h2>{% translate 'Общая сумма' %}<span>{{ cart.get_total_price_after_discount|floatformat:2 }}₽</span></h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Checkout End -->
+{% endblock %}

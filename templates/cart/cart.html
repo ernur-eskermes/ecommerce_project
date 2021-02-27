@@ -1,0 +1,132 @@
+{% extends 'main.html' %}
+{% load static i18n %}
+
+{% block content %}
+
+    <!-- Breadcrumb Start -->
+    <div class="breadcrumb-wrap">
+        <div class="container-fluid">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">{% translate 'Главная страница' %}</a></li>
+                <li class="breadcrumb-item active">{% translate 'Корзина' %}</li>
+            </ul>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Cart Start -->
+    <div class="cart-page">
+        <div class="container-fluid">
+            {% if cart %}
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="cart-page-inner">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead class="thead-dark">
+                                    <tr>
+                                        <th>{% translate 'Книга' %}</th>
+                                        <th>{% translate 'Цена' %}</th>
+                                        <th>{% translate 'Количество' %}</th>
+                                        <th>{% translate 'Всего' %}</th>
+                                        <th>{% translate 'Удалить' %}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="align-middle">
+                                    {% for item in cart %}
+                                        <tr>
+                                            <td>
+                                                <div class="img">
+                                                    <a href="{{ item.product.get_absolute_url }}"><img
+                                                            src="{{ item.product.base_photo.url }}" alt="Image">
+                                                        <p>{{ item.product.name }}</p>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                            <td>{{ item.product.price }}₽</td>
+                                            <td>
+                                                <div class="qty">
+                                                    <button onclick="if(this.nextElementSibling.value === '1'){this.dataset.action='delete'}" data-update="cart" data-action="remove"
+                                                            data-product="{{ item.product.id }}"
+                                                            class="btn-minus update-cart-or-wishlist">
+                                                        <i class="fa fa-minus"></i>
+                                                    </button>
+                                                    <input id="sst{{ item.product.id }}" type="text"
+                                                           value="{{ item.quantity }}">
+                                                    <button data-update="cart" data-action="add"
+                                                            data-product="{{ item.product.id }}"
+                                                            class="btn-plus update-cart-or-wishlist">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                            <td>{{ item.total_price }}₽</td>
+                                            <td>
+                                                <button class="update-cart-or-wishlist" data-update="cart"
+                                                        data-action="delete"
+                                                        data-product="{{ item.product.id }}">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="cart-page-inner">
+                            <div class="row">
+                                <form action="{% url 'coupons:apply' %}" method="post">
+                                    <div class="col-md-12">
+                                        <div class="coupon">
+                                            {% csrf_token %}
+                                            {{ coupon_apply_form.code }}
+                                            <button>{% translate 'Применить' %}</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <div class="col-md-12">
+                                    <div class="cart-summary">
+                                        <div class="cart-content">
+                                            <h1>{% translate 'Корзина' %}</h1>
+                                            <p>Sub Total<span>{{ cart.get_total_price|floatformat:2 }}₽</span></p>
+                                            {% if cart.coupon %}
+                                                <p>"{{ cart.coupon.code }}" {% translate 'купон' %}</p>
+                                                <p>({{ cart.coupon.discount }}% off)<span
+                                                        style="color: #b61b19">- {{ cart.get_discount|floatformat:2 }}₽</span>
+                                                </p>
+                                            {% endif %}
+                                            <p>{% translate 'Доставка' %}<span>0₽</span></p>
+                                            <h2>
+                                                {% translate 'Всего' %}<span>{{ cart.get_total_price_after_discount|floatformat:2 }}₽</span>
+                                            </h2>
+                                        </div>
+                                        <form action="{% url 'orders:order_create' %}">
+                                            <div class="cart-btn">
+                                                <button>{% translate 'Оформление заказа' %}</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="cart-page-inner">
+                    <div class="row">
+                        <div class="checkout_btn_inner d-flex align-items-center">
+                            <h5>{% translate 'Ваша корзина пуста. Вы пока не добавили товары в корзину' %}. <br><br><a
+                                    style="color: #5a6268" href="{% url 'store:product_list' %}">{% translate 'Продолжить покупки' %}</a></h5>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <!-- Cart End -->
+{% endblock %}

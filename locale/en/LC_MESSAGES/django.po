@@ -1,0 +1,479 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-02-16 23:31+0600\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\templates\cart\cart.html:10 .\templates\cart\wishlist.html:10
+#: .\templates\main.html:62 .\templates\my-account.html:12
+#: .\templates\registration\login.html:10
+#: .\templates\registration\register.html:10 .\templates\store\contact.html:9
+#: .\templates\store\product-list.html:10
+msgid "Главная страница"
+msgstr "Home"
+
+#: .\templates\cart\cart.html:11 .\templates\cart\cart.html:94
+#: .\templates\orders\order_create.html:66
+msgid "Корзина"
+msgstr "Cart"
+
+#: .\templates\cart\cart.html:28 .\templates\cart\wishlist.html:27
+#: .\templates\my-account.html:47
+msgid "Книга"
+msgstr "Book"
+
+#: .\templates\cart\cart.html:29 .\templates\cart\wishlist.html:28
+#: .\templates\my-account.html:49 .\templates\store\single-product.html:54
+msgid "Цена"
+msgstr "Price"
+
+#: .\templates\cart\cart.html:30 .\templates\store\single-product.html:58
+msgid "Количество"
+msgstr "Quantity"
+
+#: .\templates\cart\cart.html:31 .\templates\cart\cart.html:104
+msgid "Всего"
+msgstr "Total"
+
+#: .\templates\cart\cart.html:32 .\templates\cart\wishlist.html:30
+#: .\templates\store\single-product.html:221
+msgid "Удалить"
+msgstr "Delete"
+
+#: .\templates\cart\cart.html:86
+msgid "Применить"
+msgstr "Apply"
+
+#: .\templates\cart\cart.html:97
+msgid "купон"
+msgstr "coupon"
+
+#: .\templates\cart\cart.html:102 .\templates\orders\order_create.html:11
+msgid "Доставка"
+msgstr "Delivery"
+
+#: .\templates\cart\cart.html:109
+msgid "Оформить"
+msgstr "Checkout"
+
+#: .\templates\cart\cart.html:122
+msgid "Ваша корзина пуста. Вы пока не добавили товары в корзину"
+msgstr "Your shopping cart is empty. You haven't added any products to your cart yet"
+"Your shopping cart is empty. You haven't added any products to your cart yet"
+
+#: .\templates\cart\cart.html:123 .\templates\cart\wishlist.html:72
+msgid "Продолжить покупки"
+msgstr "Continue shopping"
+
+#: .\templates\cart\wishlist.html:11
+msgid "Cписок желании"
+msgstr "Wish List"
+
+#: .\templates\cart\wishlist.html:29 .\templates\cart\wishlist.html:50
+msgid "Добавить в корзину"
+msgstr "Add to Cart"
+
+#: .\templates\cart\wishlist.html:71
+msgid "Ваш список желании пуст. Вы пока не добавили товары в список желании"
+msgstr "Your wish list is empty. You haven't added items to your wish list"
+
+#: .\templates\main.html:63 .\templates\store\contact.html:10
+msgid "Контакты"
+msgstr "Contacts"
+
+#: .\templates\main.html:86 .\templates\registration\login.html:11
+msgid "Логин"
+msgstr "Login"
+
+#: .\templates\main.html:87 .\templates\registration\register.html:11
+msgid "Регистрация"
+msgstr "Registration"
+
+#: .\templates\main.html:89 .\templates\my-account.html:13
+#: .\templates\my-account.html:30
+msgid "Аккаунт"
+msgstr "Account"
+
+#: .\templates\main.html:90 .\templates\my-account.html:31
+msgid "Выйти"
+msgstr "Logout"
+
+#: .\templates\main.html:113
+msgid "Поиск"
+msgstr "Search"
+
+#: .\templates\my-account.html:26
+msgid "Заказы"
+msgstr "Orders"
+
+#: .\templates\my-account.html:28
+msgid "Адреса"
+msgstr "Addresses"
+
+#: .\templates\my-account.html:40
+msgid "У вас нет заказов"
+msgstr "You don't have any orders"
+
+#: .\templates\my-account.html:48
+msgid "Время"
+msgstr "Time"
+
+#: .\templates\my-account.html:50
+msgid "Статус"
+msgstr "Status"
+
+#: .\templates\my-account.html:64
+msgid "Оплачено"
+msgstr "Paid for"
+
+#: .\templates\my-account.html:66
+msgid "Не оплачено"
+msgstr "Not paid"
+
+#: .\templates\my-account.html:80
+msgid "Адреса доставки"
+msgstr "Delivery Addresses"
+
+#: .\templates\my-account.html:85
+msgid "У вас нет адресов доставки"
+msgstr "You don't have any delivery addresses"
+
+#: .\templates\my-account.html:90 .\templates\orders\order_create.html:43
+#: .\templates\orders\order_create.html:44
+msgid "Адрес"
+msgstr "Address"
+
+#: .\templates\my-account.html:93
+msgid "Редактировать адрес"
+msgstr "Edit the address"
+
+#: .\templates\my-account.html:94
+msgid "Удалить адрес"
+msgstr "Delete the address"
+
+#: .\templates\my-account.html:104
+msgid "Изменить данные"
+msgstr "Edit data"
+
+#: .\templates\my-account.html:141 .\templates\my-account.html:184
+#: .\templates\store\single-product.html:261
+msgid "Сохранить"
+msgstr "Save"
+
+#: .\templates\my-account.html:146
+msgid "Изменить пароль"
+msgstr "Edit password"
+
+#: .\templates\my-account.html:159
+msgid "Текущий Пароль"
+msgstr "Current Password"
+
+#: .\templates\my-account.html:170
+msgid "Новый Пароль"
+msgstr "New Password"
+
+#: .\templates\my-account.html:181
+msgid "Подтвердите Пароль"
+msgstr "Confirm Password"
+
+#: .\templates\orders\order_create.html:10
+#: .\templates\store\single-product.html:9
+msgid "Домашняя страница"
+msgstr "Home"
+
+#: .\templates\orders\order_create.html:24
+#: .\templates\my-account.html:78
+msgid "Адрес Доставки"
+msgstr "Delivery Address"
+
+#: .\templates\orders\order_create.html:29
+#: .\templates\orders\order_create.html:31 .\templates\store\contact.html:55
+msgid "Имя"
+msgstr "First Name"
+
+#: .\templates\orders\order_create.html:34
+#: .\templates\orders\order_create.html:36
+msgid "Фамилия"
+msgstr "Last Name"
+
+#: .\templates\orders\order_create.html:47
+#: .\templates\orders\order_create.html:48
+msgid "Город"
+msgstr "City"
+
+#: .\templates\orders\order_create.html:51
+#: .\templates\orders\order_create.html:53
+msgid "ZIP Код"
+msgstr "ZIP Code"
+
+#: .\templates\orders\order_create.html:56
+#: .\templates\store\single-product.html:307
+msgid "Отправить"
+msgstr "Send"
+
+#: .\templates\orders\order_create.html:72
+msgid "Скидка"
+msgstr "Discount"
+
+#: .\templates\orders\order_create.html:75
+msgid "Цена доставки"
+msgstr "Delivery Price"
+
+#: .\templates\orders\order_create.html:76
+msgid "Общая сумма"
+msgstr "Total"
+
+#: .\templates\payment\canceled.html:8
+msgid "Ваш платеж не был обработан"
+msgstr "Your payment has not been processed"
+
+#: .\templates\payment\canceled.html:9
+msgid "возникла проблема с обработкой вашего платежа"
+msgstr "here was a problem processing your payment"
+
+#: .\templates\payment\done.html:8
+msgid "Ваш платеж прошел успешно"
+msgstr "Your payment was successful"
+
+#: .\templates\payment\done.html:9
+msgid "Ваш платеж был успешно обработан"
+msgstr "Your payment has been processed successfully"
+
+#: .\templates\payment\process.html:13
+msgid "Оплата кредитной картой"
+msgstr "Payment by credit card"
+
+#: .\templates\payment\process.html:20
+msgid "Номер Карты"
+msgstr "Card Number"
+
+#: .\templates\payment\process.html:28
+msgid "Срок Годности"
+msgstr "Expiration Date"
+
+#: .\templates\payment\process.html:34
+msgid "Оплатить"
+msgstr "Pay"
+
+#: .\templates\registration\login.html:44
+#: .\templates\registration\login.html:45
+#: .\templates\registration\register.html:41
+#: .\templates\registration\register.html:42
+#: .\templates\registration\register.html:51
+msgid "Пароль"
+msgstr "Password"
+
+#: .\templates\registration\login.html:50
+#, fuzzy
+#| msgid "Сохранить"
+msgid "Сохранить в системе"
+msgstr "Keep me signed in"
+
+#: .\templates\registration\login.html:54
+#: .\templates\registration\register.html:54
+#: .\templates\store\product-list.html:60
+msgid "Submit"
+msgstr "Submit"
+
+#: .\templates\registration\register.html:50
+msgid "Повторите Пароль"
+msgstr "Repeat The Password"
+
+#: .\templates\store\contact.html:22 .\templates\store\contact.html:23
+msgid "Офис"
+msgstr "Office"
+
+#: .\templates\store\contact.html:37 .\templates\store\contact.html:38
+msgid "Магазин"
+msgstr "Store"
+
+#: .\templates\store\contact.html:62
+msgid "Заголовок"
+msgstr "Subject"
+
+#: .\templates\store\contact.html:65
+msgid "Сообщение"
+msgstr "Message"
+
+#: .\templates\store\contact.html:68
+#, fuzzy
+#| msgid "Отправить"
+msgid "Отправить сообщение"
+msgstr "Send message"
+
+#: .\templates\store\product-list.html:12
+msgid "Категория"
+msgstr "Category"
+
+#: .\templates\store\product-list.html:14
+msgid "Издатель"
+msgstr "Publisher"
+
+#: .\templates\store\product-list.html:35
+msgid "Сортировка по ..."
+msgstr "Sort by ..."
+
+#: .\templates\store\product-list.html:36
+msgid "Новинки"
+msgstr "Newer"
+
+#: .\templates\store\product-list.html:37
+msgid "Цене (убыванию)"
+msgstr "Price (descending)"
+
+#: .\templates\store\product-list.html:38
+msgid "Цене (возрастанию)"
+msgstr "Price (ascending)"
+
+#: .\templates\store\product-list.html:39
+msgid "Отзывам"
+msgstr "Reviews"
+
+#: .\templates\store\product-list.html:48
+msgid "Диапазон цен"
+msgstr "Price range"
+
+#: .\templates\store\product-list.html:49
+#: .\templates\store\product-list.html:50
+#: .\templates\store\product-list.html:51
+#: .\templates\store\product-list.html:52
+#: .\templates\store\product-list.html:53
+#: .\templates\store\product-list.html:54
+msgid "до"
+msgstr "to"
+
+#: .\templates\store\product-list.html:108
+msgid "Previous"
+msgstr "Previous"
+
+#: .\templates\store\product-list.html:121
+msgid "Next"
+msgstr "Next"
+
+#: .\templates\store\product-list.html:134
+msgid "Категории"
+msgstr "Categories"
+
+#: .\templates\store\product-list.html:147
+msgid "Издатели"
+msgstr "Publishers"
+
+#: .\templates\store\product-list.html:166
+msgid "Подписаться на рассылку"
+msgstr "Subscribe to the newsletter"
+
+#: .\templates\store\product-list.html:172
+msgid "Ваш email"
+msgstr "Your email"
+
+#: .\templates\store\single-product.html:68
+#, fuzzy
+#| msgid "Корзина"
+msgid "В Корзину"
+msgstr "Cart"
+
+#: .\templates\store\single-product.html:71
+msgid "Купить"
+msgstr "Buy"
+
+#: .\templates\store\single-product.html:82
+msgid "Описание"
+msgstr "Description"
+
+#: .\templates\store\single-product.html:85
+msgid "Характеристики"
+msgstr "Specifications"
+
+#: .\templates\store\single-product.html:88
+msgid "Отзывы"
+msgstr "Reviews"
+
+#: .\templates\store\single-product.html:95
+msgid "Описание книги"
+msgstr "Book Description"
+
+#: .\templates\store\single-product.html:99
+msgid "Характеристики книги"
+msgstr "Characteristics of the book"
+
+#: .\templates\store\single-product.html:104
+msgid "Автор"
+msgstr "Author"
+
+#: .\templates\store\single-product.html:112
+msgid "Жанр"
+msgstr "Genre"
+
+#: .\templates\store\single-product.html:120
+msgid "Издательство"
+msgstr "Publishing house"
+
+#: .\templates\store\single-product.html:128
+msgid "Серия книг"
+msgstr "Series of books"
+
+#: .\templates\store\single-product.html:136
+msgid "Возраст"
+msgstr "Age"
+
+#: .\templates\store\single-product.html:144
+msgid "Год издания"
+msgstr "Year of publication"
+
+#: .\templates\store\single-product.html:152
+msgid "Переплет"
+msgstr "Binding"
+
+#: .\templates\store\single-product.html:160
+msgid "Количество страниц"
+msgstr "Number of pages"
+
+#: .\templates\store\single-product.html:168
+msgid "Вес, г"
+msgstr "Weight, g"
+
+#: .\templates\store\single-product.html:176
+msgid "Размер, мм"
+msgstr "Size, mm"
+
+#: .\templates\store\single-product.html:184
+msgid "Язык"
+msgstr "Language"
+
+#: .\templates\store\single-product.html:218
+msgid "Редактировать"
+msgstr "Edit"
+
+#: .\templates\store\single-product.html:262
+msgid "Закрыть"
+msgstr "To close"
+
+#: .\templates\store\single-product.html:274
+msgid "Дайте свой отзыв"
+msgstr "Give your feedback"
+
+#: .\templates\store\single-product.html:309
+msgid "Вы должны быть зарегистрированы чтобы оставить отзыв"
+msgstr "You must be registered to leave a review"
+
+#: .\templates\store\single-product.html:323
+msgid "Похожие Книги"
+msgstr "Similar Books"
+
+#: .\templates\store\single-product.html:354
+msgid "Buy Now"
+msgstr "Buy Now"
