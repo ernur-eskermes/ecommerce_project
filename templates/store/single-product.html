@@ -216,15 +216,15 @@
                                     <p>
                                         Text: {{ review.comment }}
                                     </p>
-                                    {% if request.user == review.user %}
+                                    {% if update_review_form %}
                                         <a style="margin-bottom: 10px;" href="javascript:PopUpShow()" class="btn">{% translate 'Редактировать' %}</a>
-                                        <form method="post" action='.'>
+                                        <form action="{% url 'store:update_review' review.id %}" method="post">
                                             {% csrf_token %}
                                             <button class="btn" name="delete_button">{% translate 'Удалить' %}</button>
                                         </form>
                                         <div class="b-popup" id="popup1">
                                             <div class="b-popup-content">
-                                                <form method="post" action='.'>
+                                                <form method="post" action="{% url 'store:update_review' review.id %}">
                                                     {% csrf_token %}
                                                     <div class="ratting">
                                                         <div class="simple-rating">
@@ -274,7 +274,7 @@
                                 {% if create_review_form %}
                                     <div class="reviews-submit">
                                         <h4>{% translate 'Дайте свой отзыв' %}:</h4>
-                                        <form method='post' action='.'>
+                                        <form method='post' action="{% url 'store:create_review' product.id %}">
                                             {% csrf_token %}
                                             <div class="ratting">
                                                 <div class="simple-rating">
@@ -299,10 +299,10 @@
                                             </div>
                                             <div class="row form">
                                                 <div class="col-sm-8">
-                                                    <input name="subject" type="text" placeholder="Subject">
+                                                    {{ create_review_form.subject }}
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <textarea name="comment" placeholder="Comment"></textarea>
+                                                    {{ create_review_form.comment }}
                                                 </div>
                                                 <div class="col-sm-12">
                                                     {% if user.is_authenticated %}

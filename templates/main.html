@@ -60,13 +60,13 @@
 
             <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                 <div class="navbar-nav mr-auto">
-                    <a href="{% url 'store:product_list' %}" class="nav-item nav-link active">{% translate 'Главная
-                        страница' %}</a>
+                    <a href="{% url 'store:product_list' %}" class="nav-item nav-link active">
+                        {% translate 'Главная страница' %}</a>
                     <a href="{% url 'store:contact' %}" class="nav-item nav-link">{% translate 'Контакты' %}</a>
                 </div>
                 <div class="navbar-nav ml-auto">
-                    <form class="nav-item" style="padding-top: 2px;" action="{% url 'set_language' %}" method="post">{%
-                        csrf_token %}
+                    <form class="nav-item" style="padding-top: 2px;" action="{% url 'set_language' %}" method="post">
+                        {% csrf_token %}
                         <input name="next" type="hidden" value="{{ redirect_to }}">
                         <select onchange="this.form.submit()" name="language" style="
                             padding: 3px; border: solid 1px #517B97;
@@ -78,7 +78,7 @@
                             {% get_available_languages as LANGUAGES %}
                             {% get_language_info_list for LANGUAGES as languages %}
                             {% for language in languages %}
-                            <option value="{{ language.code }}" {% if language.code== LANGUAGE_CODE %}
+                            <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %}
                                     selected{% endif %}>
                                 {{ language.name_local }} ({{ language.code }})
                             </option>

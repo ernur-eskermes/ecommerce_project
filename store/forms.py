@@ -23,3 +23,7 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = ('subject', 'comment')
+        widgets = {
+            'subject': forms.TimeInput(attrs={'placeholder': 'Subject'}),
+            'comment': forms.Textarea(attrs={'placeholder': 'Comment'})
+        }

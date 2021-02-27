@@ -93,34 +93,33 @@ def product_list(request, category_slug=None, publisher_slug=None):
                    'publisher': publisher, 'publishers': publishers, 'contact_form': contact_form})
 
 
-def create_review(request, product):
+def create_review(request, product_id):
+    product = Product.objects.get(id=product_id)
     """Создание комментариев."""
     if request.method == 'POST':
-        update_review_form = ReviewForm(request.POST)
-        if update_review_form.is_valid():
-            data = update_review_form.save(commit=False)
+        create_review_form = ReviewForm(request.POST)
+        if create_review_form.is_valid():
+            data = create_review_form.save(commit=False)
             data.product = product
             data.user = request.user
-            data.rate = request.POST['simple-rating']
+            data.rate = request.POST.get('simple-rating', 0)
             data.save()
-    else:
-        update_review_form = ReviewForm()
-        return update_review_form
+            return redirect('store:detail', product.id, product.slug)
 
 
-def update_review(request, product, review):
+def update_review(request, review_id):
     """Обновление или удаление комментариев."""
+    review = Review.objects.get(id=review_id)
     if request.method == 'POST' and 'delete_button' in request.POST:
         review.delete()
+        return redirect('store:detail', review.product.id, review.product.slug)
     elif request.method == 'POST' and 'save_update_button' in request.POST:
         update_review_form = ReviewForm(data=request.POST, instance=review)
         if update_review_form.is_valid():
             data = update_review_form.save(commit=False)
             data.rate = request.POST.get('simple-rating', review.rate)
             data.save()
-    else:
-        update_review_form = ReviewForm(instance=review)
-        return update_review_form
+            return redirect('store:detail', review.product.id, review.product.slug)
 
 
 def detail(request, pk: int, slug: str):
@@ -133,10 +132,14 @@ def detail(request, pk: int, slug: str):
 
     try:
         review = Review.objects.get(product=product, user=request.user)
-        update_review_form = update_review(request, product, review)
-        create_review_form = None
     except Review.DoesNotExist:
-        create_review_form = create_review(request, product)
+        review = None
+
+    if review:
+        update_review_form = ReviewForm(instance=review)
+        create_review_form = None
+    else:
+        create_review_form = ReviewForm()
         update_review_form = None
 
     publishers = Publisher.objects.all()
